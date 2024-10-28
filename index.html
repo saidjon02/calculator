@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Meta description and keywords -->
+    <meta
+      name="description"
+      content="Bu eng yaxshi kalkulyator, Saidjon Fozilov tomonidan yaratilgan va ko'plab odamlar foydalanadi."
+      data-rh="true"
+    />
+    <meta
+      name="keywords"
+      content="onlayn kalkulyator, Fozilov Saidjon kalkulyatori, onlayn hisoblagich"
+    />
+    <!-- Open Graph (optional) -->
+    <meta property="og:title" content="Onlayn Kalkulyator" />
+    <meta
+      property="og:description"
+      content="Bu eng yaxshi kalkulyator, ko'plab odamlar foydalanadi."
+    />
+    <meta
+      property="og:image"
+      content="https://img.freepik.com/free-vector/back-school-supply-calculator-icon-isolated_18591-84513.jpg?semt=ais_hybrid"
+    />
+    <link rel="canonical" href="https://onlinecalculator01.netlify.app/" />
+
+    <meta property="og:url" content="https://onlinecalculator01.netlify.app/" />
+
+    <!-- Robots meta tag -->
+    <meta name="robots" content="index, follow" />
+
+    <title>Online calculator</title>
+  </head>
+  <body>
+    <div id="calculator">
+      <input id="display" readonly placeholder="0" />
+      <div id="keys"><button class="opacity" onclick="memoryAdd()">M+</button>
+        <button class="opacity" onclick="memorySubtract()">M-</button>
+        <button class="opacity" onclick="memoryClear()">MC</button>
+        <button class="opacity" onclick="memoryRecall()">MR</button>
+        <button onclick="appendToDisplay('7')">7</button>
+        <button onclick="appendToDisplay('8')">8</button>
+        <button onclick="appendToDisplay('9')">9</button>
+        <button onclick="appendToDisplay('+')" class="operator-btn">+</button>
+        <button onclick="appendToDisplay('4')">4</button>
+        <button onclick="appendToDisplay('5')">5</button>
+        <button onclick="appendToDisplay('6')">6</button>
+        <button onclick="appendToDisplay('-')" class="operator-btn minus">
+          -
+        </button>
+        <button onclick="appendToDisplay('1')">1</button>
+        <button onclick="appendToDisplay('2')">2</button>
+        <button onclick="appendToDisplay('3')">3</button>
+        <button onclick="appendToDisplay('*')" class="operator-btn">*</button>
+        <button onclick="appendToDisplay('0')">0</button>
+        <button onclick="appendToDisplay('.')">.</button>
+          
+        <button onclick="calculate()">=</button>
+        <button onclick="appendToDisplay('/')" class="operator-btn">/</button>
+        <button onclick="clearDisplay()" class="operator-btn">C</button>
+        <button onclick="deleteLast()" class="operator-btn">
+          <i class="bx bxs-left-arrow-alt"></i>
+        </button>
+      </div>
+    </div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      function appendToDisplay(value) {
+  const display = document.getElementById("display");
+  if (display.value === "0" || display.value === "Error") {
+    display.value = value; // 0 yoki Error bo'lsa, yangi qiymatni qo'yish
+  } else {
+    display.value += value; // Aks holda, yangi qiymatni qo'shish
+  }
+}
+
+function calculate() {
+  try {
+    // Hisobni amalga oshiring
+    document.getElementById("display").value = eval(
+      document.getElementById("display").value
+    );
+  } catch (error) {
+    // Xato bo'lsa, 'Error' deb ko'rsating
+    document.getElementById("display").value = "Error";
+  }
+}
+
+function deleteLast() {
+  const display = document.getElementById("display");
+  display.value = display.value.slice(0, -1);
+}
+
+// Move clearDisplay outside the event listener
+function clearDisplay() {
+  document.getElementById("display").value = "0"; // Bo'sh o'rniga 0 ni o'rnatish
+}
+
+// Listen for keyboard input
+document.addEventListener("keydown", function (event) {
+  const key = event.key;
+  const operators = ["+", "-", "*", "/"];
+
+  // Check if key is a digit, operator, or special key
+  if (!isNaN(key)) {
+    appendToDisplay(key); // if key is a number
+  } else if (operators.includes(key)) {
+    appendToDisplay(key); // if key is an operator
+  } else if (key === "Enter" || key === "=") {
+    calculate(); // if Enter key is pressed, calculate
+  } else if (key === "Backspace") {
+    deleteLast(); // if Backspace key is pressed, delete last character
+  } else if (key === "Escape" || key === "c") {
+    clearDisplay(); // if Escape or "c" key is pressed, clear display
+  } else if (key === ".") {
+    appendToDisplay("."); // if period is pressed, add decimal point
+  }
+});
+
+    </script>
+  </body>
+</html>
